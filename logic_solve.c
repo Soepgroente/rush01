@@ -1,12 +1,10 @@
 #include "sudoku.h"
 
-int n;
-
 static void	delete_rowcol(int*** board, int x, int y, int num)
 {
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < size; i++)
 		board[x][i][num] = 0;
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < size; i++)
 		board[i][y][num] = 0;
 }
 
@@ -15,14 +13,14 @@ static void	delete_rowcol(int*** board, int x, int y, int num)
 
 void	clean_up(int*** board)
 {
-	for (int x = 0; x < n; x++)
+	for (int x = 0; x < size; x++)
 	{
-		for (int y = 0; y < n; y++)
+		for (int y = 0; y < size; y++)
 		{
 			if (board[x][y][0] != 0)
 			{
 				delete_rowcol(board, x, y, board[x][y][0]);
-				for (int z = 1; z < n; z++)
+				for (int z = 1; z < size; z++)
 					board[x][y][z] = 0;
 			}
 		}
@@ -33,164 +31,176 @@ void	clean_up(int*** board)
 
 void	remove_options(t_grid* grid, int*** board)
 {
-	int x = 0;
-	int y = 0;
-
-	while (x < n)
+	for (int x = 0; x < size; x++)
 	{
-		while (y < n)
+		for (int y = 0; y < size; y++)
 		{
 			if (board[x][y][0] == 0)
 			{
-				for (int z = n + 2 - grid->sky_left[x] + y; z <= n; z++)
+				for (int z = size + 2 - grid->sky_left[x] + y; z <= size; z++)
 					board[x][y][z] = 0;
-				for (int z = n + 1 - grid->sky_right[x] + n - y; z <= n; z++)
+				for (int z = size + 1 - grid->sky_right[x] + size - y; z <= size; z++)
 					board[x][y][z] = 0;
-				for (int z = n + 2 - grid->sky_up[y] + x; z <= n; z++)
+				for (int z = size + 2 - grid->sky_up[y] + x; z <= size; z++)
 					board[x][y][z] = 0;
-				for (int z = n + 1 - grid->sky_down[y] + n - x; z <= n; z++)
+				for (int z = size + 1 - grid->sky_down[y] + size - x; z <= size; z++)
 					board[x][y][z] = 0;
 			}
-			y++;
 		}
-		y = 0;
-		x++;
 	}
+}
+
+static bool	check_row_presence(int*** board, int x, int try)
+{
+	for (int i = 0; i < size; i++)
+		if (board[x][i][0] == try)
+			return (true);
+	return (false);
 }
 
 /*	Find any digits that can only be placed in one place in a row	*/
 
-void	place_single_row(int*** board)
+int	place_single_row(int*** board)
 {
-	int try = 1;
-	int x;
-	int y;
 	int check = -1;
+	int changes = 0;
 
-	while (try <= n)
+	for (int try = 1; try <= size; try++)
 	{
-		x = 0;
-		while (x < n)
+		for (int x = 0; x < size; x++)
 		{
-			y = 0;
-			while (y < n)
+			if (check_row_presence(board, x, try) == false)
 			{
-				if (check == -1 && board[x][y][try] != 0)
-					check = y;
-				else if (board[x][y][try] != 0)
+				for (int y = 0; y < size; y++)
 				{
-					check = -1;
-					break ;
-				}
-				y++;
-			}
-			if (check != -1)
-			{
-				board[x][check][0] = try;
-				check = -1;
-			}
-			x++;
-		}
-		try++;
-	}
-}
-
-/*	Find any digits that can only be placed in one place in a column	*/
-
-void	place_single_col(int*** board)
-{
-	int try = 1;
-	int x;
-	int y;
-	int check = 0;
-
-	while (try <= n)
-	{
-		y = 0;
-		while (y < n)
-		{
-			x = 0;
-			while (x < n)
-			{
-				if (check == -1 && board[x][y][try] != 0)
-					check = x;
-				else if (board[x][y][try] != 0)
-				{
-					check = -1;
-					break ;
-				}
-				x++;
-			}
-			if (check != -1)
-			{
-				board[check][y][0] = try;
-				check = -1;
-			}
-			y++;
-		}
-		try++;
-	}
-}
-
-/*	Find any cells that just have one option left	*/
-
-void	place_single_cell(int*** board)
-{
-	int check = 0;
-
-	for (int x = 0; x < n; x++)
-	{
-		for (int y = 0; y < n; y++)
-		{
-			if (board[x][y][0] == 0)
-			{
-				for (int z = 1; z <= n; z++)
-				{
-					if (check == 0 && board[x][y][z] != 0)
-						check = z;
-					else if (board[x][y][z] != 0)
+					if (check == -1 && board[x][y][try] != 0)
+						check = y;
+					else if (board[x][y][try] != 0)
 					{
 						check = 0;
 						break ;
 					}
 				}
-				if (check != 0)
+				if (check == -1)
+					return (-1);
+				if (check > 0)
 				{
-					board[x][y][0] = check;
-					check = 0;
+					board[x][check][0] = try;
+					changes++;
 				}
 			}
+			check = -1;
 		}
 	}
+	return (changes);
 }
 
-/* bool	check_if_solved(int*** board)
+static bool	check_col_presence(int*** board, int y, int try)
 {
+	for (int i = 0; i < size; i++)
+		if (board[i][y][0] == try)
+			return (true);
+	return (false);
+}
 
-	for (int x = 0; x < n; x++)
+/*	Find any digits that can only be placed in one place in a column	*/
+
+int	place_single_col(int*** board)
+{
+	int check = -1;
+	int changes = 0;
+
+	for (int try = 1; try <= size; try++)
 	{
-		for (int y = 0; y < n; y++)
-		if (check_if_possible(grid))
+		for (int y = 0; y < size; y++)
+		{
+			if (check_col_presence(board, y, try) == false)
+			{
+				for (int x = 0; x < size; x++)
+				{
+					if (check == -1 && board[x][y][try] != 0)
+						check = x;
+					else if (board[x][y][try] != 0)
+					{
+						check = 0;
+						break ;
+					}
+				}
+				if (check == -1)
+					return (-1);
+				if (check > 0)
+				{
+					board[check][y][0] = try;
+					changes++;
+				}
+			}
+			check = -1;
+		}
 	}
-} */
+	return (changes);
+}
 
-void	logic_solve(t_grid* grid, int*** board)
+/*	Find any cells that just have one option left	*/
+
+int	place_single_cell(int*** board)
 {
-	n = grid->n;
-	puts("Printing before logical stuff");
-	print_everything(grid, board);
-	print_board(grid, board);
-	for (int i = 0; i < 10; i++)
+	int check = -1;
+	int changes = 0;
+
+	for (int x = 0; x < size; x++)
 	{
+		for (int y = 0; y < size; y++)
+		{
+			if (board[x][y][0] == 0)
+			{
+				for (int try = 1; try <= size; try++)
+				{
+					if (check == -1 && board[x][y][try] != 0)
+						check = try;
+					else if (board[x][y][try] != 0)
+					{
+						check = 0;
+						break ;
+					}
+				}
+				if (check == -1)
+					return (-1);
+				if (check > 0)
+				{
+					board[x][y][0] = check;
+					changes++;
+				}
+			}
+			check = -1;
+		}
+	}
+	return (changes);
+}
+
+bool	logic_solve(int*** board)
+{
+	int changes = 1;
+	int check;
+
+	while (changes > 0)
+	{
+		changes = 0;
 		clean_up(board);
-		place_single_row(board);
+		check = place_single_row(board);
+		if (check == -1)
+			return (false);
+		changes += check;
 		clean_up(board);
-		place_single_col(board);
+		check = place_single_col(board);
+		if (check == -1)
+			return (false);
+		changes += check;
 		clean_up(board);
 		place_single_cell(board);
+		if (check == -1)
+			return (false);
+		changes += check;
 		clean_up(board);
 	}
-	puts("Printing after logical stuff");
-	print_everything(grid, board);
-	print_board(grid, board);
+	return (true);
 }

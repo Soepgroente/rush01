@@ -7,91 +7,96 @@ static void	paste_input(int* clue, char** argv, int i)
 		puts("Invalid input");
 		exit(EXIT_FAILURE);
 	}
-	clue[i % SIZE] = atoi(argv[i + 1]);
+	clue[i % size] = atoi(argv[i + 1]);
+}
+
+void	free_everything(t_grid* grid)
+{
+	free(grid->col);
+	free(grid->rev_col);
+	free(grid->row);
+	free(grid->rev_row);
+	free(grid->sky_down);
+	free(grid->sky_up);
+	free(grid->sky_left);
+	free(grid->sky_right);
+	for (int i = 0; i < size * size; i++)
+		free_board(grid->board[i]);
+	free(grid->board);
 }
 
 void	free_board(int*** board)
 {
-	for (int x = 0; x < SIZE; x++)
+	for (int x = 0; x < size; x++)
 	{
-		for (int y = 0; y < SIZE; y++)
+		for (int y = 0; y < size; y++)
 			free(board[x][y]);
 		free(board[x]);
 	}
 	free(board);
-	board = NULL;
 }
 
-int***	malloc_board(void)
+int***	malloc_board(t_grid* grid)
 {
 	int*** board;
 
-	board = malloc(SIZE * sizeof(int**));
-	for (int x = 0; x < SIZE; x++)
+	board = malloc(size * sizeof(int**));
+	if (!board)
+		some_error(grid);
+	for (int x = 0; x < size; x++)
 	{
-		board[x] = malloc(SIZE * sizeof(int*));
+		board[x] = malloc(size * sizeof(int*));
 		if (!board[x])
-			some_error();
-		for (int y = 0; y < SIZE; y++)
+			some_error(grid);
+		for (int y = 0; y < size; y++)
 		{
-			board[x][y] = malloc((SIZE + 1) * sizeof(int));
+			board[x][y] = malloc((size + 1) * sizeof(int));
 			if (!board[x][y])
-				some_error();
-			for (int z = 0; z < SIZE + 1; z++)
+				some_error(grid);
+			for (int z = 0; z < size + 1; z++)
 				board[x][y][z] = z;
 		}
 	}
 	return (board);
 }
 
+static void	malloc_the_things(t_grid* grid)
+{
+	grid->sky_up = malloc(size * sizeof(int));
+	grid->sky_down = malloc(size * sizeof(int));
+	grid->sky_left = malloc(size * sizeof(int));
+	grid->sky_right = malloc(size * sizeof(int));
+	grid->row = malloc(size * sizeof(int));
+	grid->rev_row = malloc(size * sizeof(int));
+	grid->col = malloc(size * sizeof(int));
+	grid->rev_col = malloc(size * sizeof(int));
+	if (!grid->sky_up || !grid->sky_down || !grid->sky_left || !grid->sky_right \
+		|| !grid->row || !grid->col || !grid->rev_row || !grid->rev_col || !grid->board)
+		some_error(grid);
+	grid->board = malloc(size * size * sizeof(int***));
+	if (!grid->board)
+		some_error(grid);
+	for (int x = 0; x < size * size + 1; x++)
+		grid->board[x] = malloc_board(grid);
+}
+
 void	parse_input(t_grid* grid, char** argv)
 {
 	int i = 0;
 
-	grid->sky_up = malloc(SIZE * sizeof(int));
-	grid->sky_down = malloc(SIZE * sizeof(int));
-	grid->sky_left = malloc(SIZE * sizeof(int));
-	grid->sky_right = malloc(SIZE * sizeof(int));
-	grid->row = malloc(SIZE * sizeof(int));
-	grid->rev_row = malloc(SIZE * sizeof(int));
-	grid->col = malloc(SIZE * sizeof(int));
-	grid->rev_col = malloc(SIZE * sizeof(int));
-	grid->board = malloc_board();
-	if (!grid->sky_up || !grid->sky_down || !grid->sky_left || !grid->sky_right \
-		|| !grid->row || !grid->col || !grid->rev_row || !grid->rev_col || !grid->board)
-		some_error();
-
-	/* Insert user input into clues */
-
-	for (int x = 0; x < SIZE; x++)
-		paste_input(grid->sky_up, argv, i + x, SIZE);
-	i += SIZE;
-	for (int x = 0; x < SIZE; x++)
-		paste_input(grid->sky_down, argv, i + x, SIZE);
-	i += SIZE;
-	for (int x = 0; x < SIZE; x++)
-		paste_input(grid->sky_left, argv, i + x, SIZE);
-	i += SIZE;	
-	for (int x = 0; x < SIZE; x++)
-		paste_input(grid->sky_right, argv, i + x, SIZE);
-	i += SIZE;
-
-	/* Basic check whether input is valid */
-
-	for (int i = 0; i < SIZE; i++)
-	{
-		if (grid->sky_left[i] + grid->sky_right[i] > SIZE + 1)
-		{
-			printf("Can't solve with these clues\n");
-			exit(EXIT_FAILURE);
-		}
-		if (grid->sky_up[i] + grid->sky_down[i] > SIZE + 1)
-		{
-			printf("Can't solve with these clues\n");
-			exit(EXIT_FAILURE);
-		}
-	}
+	malloc_the_things(grid);
+	for (int x = 0; x < size; x++)
+		paste_input(grid->sky_up, argv, i + x);
+	i += size;
+	for (int x = 0; x < size; x++)
+		paste_input(grid->sky_down, argv, i + x);
+	i += size;
+	for (int x = 0; x < size; x++)
+		paste_input(grid->sky_left, argv, i + x);
+	i += size;	
+	for (int x = 0; x < size; x++)
+		paste_input(grid->sky_right, argv, i + x);
 	grid->iter = 0;
 	grid->iter_count = 0;
-	remove_options(grid, grid->board);
+	remove_options(grid, grid->board[0]);
 }
