@@ -71,8 +71,9 @@ void	update_progress(t_grid* grid, int*** board)
 {
 	grid->iter_count++;
 	grid->iter = 0;
-	printf("Iterations: %.2f billion\n", (float) (grid->iter_count * ITER_COUNT + grid->iter) / 1000000000);
+	printf("Iterations: %.2f million\n", (float) (grid->iter_count * ITER_COUNT + grid->iter) / 1000000);
 	print_board(grid, board);
+	print_everything(board);
 }
 
 void	print_single_line(int* line)

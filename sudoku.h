@@ -11,7 +11,7 @@
 # include <string.h>
 # include <time.h>
 
-# define ITER_COUNT 10000000
+# define ITER_COUNT 100000
 
 extern int size;
 
@@ -49,7 +49,7 @@ void	update_progress(t_grid* grid, int*** board);
 
 /* Solver functions */
 
-bool	logic_solve(int*** board);
+bool	logic_solve(t_grid* grid, int*** board);
 int		place_single_row(int*** board);
 int		place_single_col(int*** board);
 int		place_single_cell(int*** board);
@@ -60,7 +60,7 @@ bool	check_if_possible(t_grid* grid, int*** board, int x, int y, int try);
 
 int*	copy_array(int* line);
 bool	in_array(int x, int* line);
-int		count_vision(int** line);
+int		count_vision(int* line);
 int		min_vision(int* line);
 int		max_vision(int* line);
 

@@ -6,7 +6,7 @@ int*	copy_array(int* line)
 
 	copy = malloc(size * sizeof(int));
 	if (!copy)
-		return (NULL);
+		exit(EXIT_FAILURE);
 	for (int i = 0; i < size; i++)
 		copy[i] = line[i];
 	return (copy);
@@ -22,19 +22,23 @@ bool	in_array(int x, int* line)
 	return (false);
 }
 
-int	count_vision(int** line)
+int	count_vision(int* line)
 {
 	int count = 0;
 	int high = 0;
 	for (int i = 0; i < size; i++)
 	{
-		if ((*line)[i] > high)
+		if (line[i] > high)
 		{
-			high = (*line)[i];
+			high = line[i];
 			count++;
 		}
 	}
-	free(*line);
+/* 	puts("\nLine / count:");
+	for (int x = 0; x < size; x++)
+		printf("%d", line[x]);
+	printf("; %d\n", count); */
+	free(line);
 	return (count);
 }
 
@@ -45,21 +49,12 @@ int	min_vision(int* line)
 	int*	copy;
 
 	copy = copy_array(line);
-	if (!copy)
-		return (-1);
-	while (i < size && copy[i] == 0)
-	{
-		if (in_array(num, copy) == false)
-		{
-			copy[i] = num;
-			i++;
-		}
-		else if (num > 0)
-			num--;
-		else
-			i++;
-	}
-	return (count_vision(&copy));
+	while (copy[i] != 0 && i < size)
+		i++;
+	while (in_array(num, copy) == true)
+		num--;
+	copy[i] = num;
+	return (count_vision(copy));
 }
 
 int	max_vision(int* line)
@@ -67,25 +62,33 @@ int	max_vision(int* line)
 	int		i = 0;
 	int		num;
 	int*	copy;
+	// static int count = 0;
 
 	copy = copy_array(line);
-	if (!copy)
-		return (-1);
-	if (line[0] == size)
-		return (free(copy), 1);
-	num = (line[0] + 1);
-	while (i < size)
+	num = copy[0] + 1;
+	while (copy[i] != 0 && i < size)
+		i++;
+	while (i < size && num <= size)
 	{
-		while (copy[i] == 0)
+		if (copy[i] == 0)
 		{
 			if (in_array(num, copy) == false)
+			{
 				copy[i] = num;
-			else if (num < size)
+				i++;
 				num++;
+			}
 			else
-				break ;
+				num++;
 		}
-		i++;
+		else
+			i++;
 	}
-	return (count_vision(&copy));
+ 	// puts("\nMax vision:");
+	// for (int x = 0; x < size; x++)
+	// 	printf("%d", copy[x]);
+	// count++;
+	// if (count == 10)
+	// 	exit(0);
+	return (count_vision(copy));
 }

@@ -3,68 +3,36 @@
 
 static bool	skyscrape_left(t_grid* grid, int x)
 {
-	int check;
-
-	check = min_vision(grid->row);
-	if (check == -1)
-		some_error(grid);
-	if (check > grid->sky_left[x])
+	if (min_vision(grid->row) > grid->sky_left[x])
 		return (false);
-	check = max_vision(grid->row);
-	if (check == -1)
-		some_error(grid);
-	if (check < grid->sky_left[x])
+	if (max_vision(grid->row) < grid->sky_left[x])
 		return (false);
 	return (true);
 }
 
 static bool	skyscrape_right(t_grid* grid, int x)
 {
-	int check;
-
-	check = min_vision(grid->rev_row);
-	if (check == -1)
-		some_error(grid);
-	if (check > grid->sky_right[x])
+	if (min_vision(grid->rev_row) > grid->sky_right[x])
 		return (false);
-	check = max_vision(grid->rev_row);
-	if (check == -1)
-		some_error(grid);
-	if (check < grid->sky_right[x])
+	if (max_vision(grid->rev_row) < grid->sky_right[x])
 		return (false);
 	return (true);
 }
 
 static bool	skyscrape_up(t_grid* grid, int y)
 {
-	int check;
-
-	check = min_vision(grid->col);
-	if (check == -1)
-		some_error(grid);
-	if (check > grid->sky_up[y])
+	if (min_vision(grid->col) > grid->sky_up[y])
 		return (false);
-	check = max_vision(grid->col);
-	if (check == -1)
-		some_error(grid);
-	if (check < grid->sky_up[y])
+	if (max_vision(grid->col) < grid->sky_up[y])
 		return (false);
 	return (true);
 }
 
 static bool	skyscrape_down(t_grid* grid, int y)
 {
-	int check;
-
-	check = min_vision(grid->rev_col);
-	if (check == -1)
-		some_error(grid);
-	if (check > grid->sky_down[y])
+	if (min_vision(grid->rev_col) > grid->sky_down[y])
 		return (false);
-	check = max_vision(grid->rev_col);
-	if (check == -1)
-		some_error(grid);
-	if (check < grid->sky_down[y])
+	if (max_vision(grid->rev_col) < grid->sky_down[y])
 		return (false);
 	return (true);
 }
@@ -83,6 +51,12 @@ static bool	check_row(t_grid* grid, int*** board, int x, int y, int try)
 	}
 	grid->row[y] = try;
 	grid->rev_row[size - 1 - y] = try;
+	// puts("\nRow");
+	// for (int i = 0; i < size; i++)
+	// 	printf("%d", grid->row[i]);
+	// puts("\nRev_row");
+	// for (int i = 0; i < size; i++)
+	// 	printf("%d", grid->rev_row[i]);
 	return (true);
 }
 
@@ -100,6 +74,12 @@ static bool	check_column(t_grid* grid, int*** board, int x, int y, int try)
 	}
 	grid->col[x] = try;
 	grid->rev_col[size - 1 - x] = try;
+	// puts("\nCol");
+	// for (int i = 0; i < size; i++)
+	// 	printf("%d", grid->col[i]);
+	// puts("\nRev_col");
+	// for (int i = 0; i < size; i++)
+	// 	printf("%d", grid->rev_col[i]);
 	return (true);
 }
 

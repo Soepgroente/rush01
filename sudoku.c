@@ -30,8 +30,8 @@ static bool	solve_puzzle(t_grid* grid)
 					if (grid->board[b][x][y][try] != 0 && check_if_possible(grid, grid->board[b], x, y, try) == true)
 					{
 						grid->board[b][x][y][0] = try;
-						if (logic_solve(grid->board[b]) == false)
-							copy_board(grid->board[b - 1], grid->board[b]);
+						if (logic_solve(grid, grid->board[b]) == false)
+							b += 0;
 						else if (solve_puzzle(grid) == true)
 							return (true);
 						copy_board(grid->board[b - 1], grid->board[b]);
@@ -45,6 +45,11 @@ static bool	solve_puzzle(t_grid* grid)
 	grid->main_board = grid->board[b];
 	return (true);
 }
+
+/* static void	leaks(void)
+{
+	system("leaks -q sudoku_solver");
+} */
 
 int	main(int argc, char **argv)
 {
@@ -61,6 +66,7 @@ int	main(int argc, char **argv)
 	parse_input(&grid, argv);
 	printf("Initial board:");
 	print_board(&grid, grid.board[0]);
+	print_everything(grid.board[0]);
 	if (solve_puzzle(&grid) == true)
 	{
 		printf("\nSolved!\nFinal board:\n\n");
@@ -72,6 +78,6 @@ int	main(int argc, char **argv)
 	// free_everything(&grid);
 	printf("Running time (seconds): %.2f\n", (float)(end_time - start_time) / CLOCKS_PER_SEC);
 	printf("Iterations: %lu\n", (size_t) grid.iter_count * ITER_COUNT + grid.iter);
-	// system("leaks -q sudoku_solver");
+	system("leaks -q sudoku_solver");
 	return (0);
 }
