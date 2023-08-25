@@ -1,94 +1,128 @@
 #include "sudoku.h"
 
-int*	copy_array(int* line)
+static void	free_line(int** line)
 {
-	int*	copy;
-
-	copy = malloc(size * sizeof(int));
-	if (!copy)
-		exit(EXIT_FAILURE);
 	for (int i = 0; i < size; i++)
-		copy[i] = line[i];
+		free(line[i]);
+	free(line);
+	line = NULL;
+}
+
+int**	copy_array(int** line)
+{
+	int**	copy;
+
+	copy = malloc(size * sizeof(int*));
+	if (!copy)
+		some_error("Malloc fail");
+	for (int i = 0; i < size; i++)
+	{
+		copy[i] = malloc((size + 1) * sizeof(int));
+		if (!copy[i])
+			some_error("Malloc fail");
+	}
+	for (int y = 0; y < size; y++)
+		for (int z = 0; z <= size; z++)
+			copy[y][z] = line[y][z];
 	return (copy);
 }
 
-bool	in_array(int x, int* line)
+bool	in_array(int num, int** line)
 {
 	for (int i = 0; i < size; i++)
 	{
-		if (line[i] == x)
+		if (line[i][0] == num)
 			return (true);
 	}
 	return (false);
 }
 
-int	count_vision(int* line)
+int	count_vision(int** line)
 {
 	int count = 0;
 	int high = 0;
+
 	for (int i = 0; i < size; i++)
 	{
-		if (line[i] > high)
+		if (line[i][0] > high)
 		{
-			high = line[i];
+			high = line[i][0];
 			count++;
 		}
 	}
-/* 	puts("\nLine / count:");
-	for (int x = 0; x < size; x++)
-		printf("%d", line[x]);
-	printf("; %d\n", count); */
-	free(line);
+	print_single_line(line);
+	free_line(line);
+	printf("Count: %d\n\n", count);
 	return (count);
 }
 
-int	min_vision(int* line)
+int	min_vision(int** line)
 {
 	int		i = 0;
 	int		num = size;
-	int*	copy;
+	int**	copy;
 
 	copy = copy_array(line);
-	while (copy[i] != 0 && i < size)
+	while (i < size && copy[i][0] != 0)
 		i++;
 	while (in_array(num, copy) == true)
 		num--;
-	copy[i] = num;
+	if (i < size && copy[i][0] == 0)
+		copy[i][0] = num;
+	puts("Min");
 	return (count_vision(copy));
 }
 
-int	max_vision(int* line)
+int	max_vision(int** line)
 {
-	int		i = 0;
-	int		num;
-	int*	copy;
-	// static int count = 0;
+	int**	copy;
+	int i = 0;
+	int num = size;
+	int found = 0;
 
 	copy = copy_array(line);
-	num = copy[0] + 1;
-	while (copy[i] != 0 && i < size)
-		i++;
-	while (i < size && num <= size)
+	if (in_array(num, copy) == false)
 	{
-		if (copy[i] == 0)
+		for (int x = num - 1; x >= 0; x--)
 		{
-			if (in_array(num, copy) == false)
+			if (copy[x][num] != 0)
 			{
-				copy[i] = num;
-				i++;
-				num++;
+				copy[x][0] = num;
+				num--;
+				break ;
 			}
-			else
-				num++;
 		}
-		else
-			i++;
 	}
- 	// puts("\nMax vision:");
-	// for (int x = 0; x < size; x++)
-	// 	printf("%d", copy[x]);
-	// count++;
-	// if (count == 10)
-	// 	exit(0);
+	while (in_array(num, copy) == false)
+	{
+		for (int x = size - 1; x >= 0; x--)
+		{
+			if (copy[x][num] != 0)
+			{
+				if (found == 0)
+					found = x;
+				else
+				{
+					found = 0;
+					break ;
+				}
+			}
+		}
+		if (found != 0)
+			copy[found][0] = num;
+		num--;
+		found = 0;
+	}
+	num = copy[0][0] + 1;
+	while (i < size && num < size)
+	{
+		while (num < size && in_array(num, copy) == true)
+			num++;
+		while (i < size && copy[i][0] != 0)
+			i++;
+		if (i < size && copy[i][num] != 0)
+			copy[i][0] = num;
+		i++;
+	}
 	return (count_vision(copy));
 }

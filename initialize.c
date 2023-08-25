@@ -36,28 +36,43 @@ void	free_board(int*** board)
 	free(board);
 }
 
-int***	malloc_board(t_grid* grid)
+int***	malloc_board(void)
 {
 	int*** board;
 
 	board = malloc(size * sizeof(int**));
 	if (!board)
-		some_error(grid);
+		some_error("Malloc board error");
 	for (int x = 0; x < size; x++)
 	{
 		board[x] = malloc(size * sizeof(int*));
 		if (!board[x])
-			some_error(grid);
+			some_error("Malloc board error");
 		for (int y = 0; y < size; y++)
 		{
 			board[x][y] = malloc((size + 1) * sizeof(int));
 			if (!board[x][y])
-				some_error(grid);
+				some_error("Malloc board error");
 			for (int z = 0; z < size + 1; z++)
 				board[x][y][z] = z;
 		}
 	}
 	return (board);
+}
+
+static int**	malloc_line(void)
+{
+	int**	line;
+	line = malloc(size * sizeof(int*));
+	if (!line)
+		some_error("Malloc line error");
+	for (int i = 0; i < size; i++)
+	{
+		line[i] = malloc((size + 1) * sizeof(int));
+		if (!line[i])
+			some_error("Malloc line error");
+	}
+	return (line);
 }
 
 static void	malloc_the_things(t_grid* grid)
@@ -66,18 +81,17 @@ static void	malloc_the_things(t_grid* grid)
 	grid->sky_down = malloc(size * sizeof(int));
 	grid->sky_left = malloc(size * sizeof(int));
 	grid->sky_right = malloc(size * sizeof(int));
-	grid->row = malloc(size * sizeof(int));
-	grid->rev_row = malloc(size * sizeof(int));
-	grid->col = malloc(size * sizeof(int));
-	grid->rev_col = malloc(size * sizeof(int));
-	if (!grid->sky_up || !grid->sky_down || !grid->sky_left || !grid->sky_right \
-		|| !grid->row || !grid->col || !grid->rev_row || !grid->rev_col || !grid->board)
-		some_error(grid);
-	grid->board = malloc(size * size * sizeof(int***));
+	if (!grid->sky_up || !grid->sky_down || !grid->sky_left || !grid->sky_right)
+		some_error("Malloc error");
+	grid->row = malloc_line();
+	grid->rev_row = malloc_line();
+	grid->col = malloc_line();
+	grid->rev_col = malloc_line();
+	grid->board = malloc((size * size + 1) * sizeof(int***));
 	if (!grid->board)
-		some_error(grid);
+		some_error("Malloc error");
 	for (int x = 0; x < size * size + 1; x++)
-		grid->board[x] = malloc_board(grid);
+		grid->board[x] = malloc_board();
 }
 
 void	parse_input(t_grid* grid, char** argv)
@@ -98,5 +112,4 @@ void	parse_input(t_grid* grid, char** argv)
 		paste_input(grid->sky_right, argv, i + x);
 	grid->iter = 0;
 	grid->iter_count = 0;
-	remove_options(grid, grid->board[0]);
 }

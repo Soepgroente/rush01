@@ -1,9 +1,8 @@
 #include "sudoku.h"
 
-void	some_error(t_grid* grid)
+void	some_error(char* msg)
 {
-	puts("Some error occured");
-	free_everything(grid);
+	printf("%s\n", msg);
 	exit(EXIT_FAILURE);
 }
 
@@ -71,16 +70,21 @@ void	update_progress(t_grid* grid, int*** board)
 {
 	grid->iter_count++;
 	grid->iter = 0;
-	printf("Iterations: %.2f million\n", (float) (grid->iter_count * ITER_COUNT + grid->iter) / 1000000);
+	printf("Iterations: %lu\n", (size_t) (grid->iter_count * ITER_COUNT + grid->iter));
 	print_board(grid, board);
 	print_everything(board);
 }
 
-void	print_single_line(int* line)
+void	print_single_line(int** line)
 {
 	for (int i = 0; i < size; i++)
+		printf("%d", line[i][0]);
+	printf("\n");
+	for (int y = 0; y < size; y++)
 	{
-		printf("%d", line[i]);
+		for (int z = 0; z < size; z++)
+			printf("%d", line[y][z]);
+		printf(" | ");
 	}
-	printf("\n\n");
+	printf("\n");
 }

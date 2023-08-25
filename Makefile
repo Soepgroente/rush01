@@ -1,7 +1,7 @@
 NAME	= sudoku_solver
 RM		= rm -rf
 CC		= gcc
-CFLAGS	= -Wall -Werror -Wextra -flto #-g3 -fsanitize=address 
+CFLAGS	= -Wall -Werror -Wextra -flto -Ofast -march=native #-g3 -fsanitize=address 
 SRCS	= initialize.c logic_solve.c sudoku.c utilities.c vision.c vision_helpers.c
 
 OBJDIR	= Sudobjects

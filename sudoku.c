@@ -15,24 +15,26 @@ static bool	solve_puzzle(t_grid* grid)
 	static int b = 0;
 
 	grid->iter++;
-	copy_board(grid->board[b], grid->board[b + 1]);
 	b++;
-	if (grid->iter == ITER_COUNT)
+	copy_board(grid->board[b - 1], grid->board[b]);
+	if (grid->iter == 3)
+	{
 		update_progress(grid, grid->board[b]);
+		exit(0);
+	}
 	for (int x = 0; x < size; x++)
 	{
 		for (int y = 0; y < size; y++)
 		{
 			if (grid->board[b][x][y][0] == 0)
 			{
-				for (int try = size; try > 0; try--)
+				for (int try = 1; try <= size; try++)
 				{
+					printf("Try: %d\n", try);
 					if (grid->board[b][x][y][try] != 0 && check_if_possible(grid, grid->board[b], x, y, try) == true)
 					{
 						grid->board[b][x][y][0] = try;
-						if (logic_solve(grid, grid->board[b]) == false)
-							b += 0;
-						else if (solve_puzzle(grid) == true)
+						if (logic_solve(grid, grid->board[b]) == true && (solve_puzzle(grid) == true))
 							return (true);
 						copy_board(grid->board[b - 1], grid->board[b]);
 					}
@@ -46,15 +48,10 @@ static bool	solve_puzzle(t_grid* grid)
 	return (true);
 }
 
-/* static void	leaks(void)
-{
-	system("leaks -q sudoku_solver");
-} */
-
 int	main(int argc, char **argv)
 {
 	t_grid	grid;
-	clock_t start_time; clock_t end_time;
+	clock_t start_time; clock_t end_time; double total_time;
 
 	printf("Argc: %d\n", argc);
 	if (argc > 37)
@@ -67,6 +64,13 @@ int	main(int argc, char **argv)
 	printf("Initial board:");
 	print_board(&grid, grid.board[0]);
 	print_everything(grid.board[0]);
+
+	remove_options(&grid, grid.board[0]);
+	logic_solve(&grid, grid.board[0]);
+
+	printf("Pre-solved:");
+	print_board(&grid, grid.board[0]);
+	print_everything(grid.board[0]);
 	if (solve_puzzle(&grid) == true)
 	{
 		printf("\nSolved!\nFinal board:\n\n");
@@ -75,9 +79,15 @@ int	main(int argc, char **argv)
 	else
 		printf("Couldn't solve :-(\n");
 	end_time = clock();
+	// print_everything(grid.board[0]);
+	// print_everything(grid.board[1]);
 	// free_everything(&grid);
-	printf("Running time (seconds): %.2f\n", (float)(end_time - start_time) / CLOCKS_PER_SEC);
+	total_time = (double)(end_time - start_time) / CLOCKS_PER_SEC;
+	printf("Runtime: %d minute(s) ", (int)total_time / 60);
+	while (total_time > 60.00)
+		total_time -= 60.00;
+	printf("%.2f seconds\n", total_time);
 	printf("Iterations: %lu\n", (size_t) grid.iter_count * ITER_COUNT + grid.iter);
-	system("leaks -q sudoku_solver");
+	// system("leaks -q sudoku_solver");
 	return (0);
 }

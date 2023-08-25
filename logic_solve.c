@@ -215,7 +215,7 @@ bool	logic_solve(t_grid* grid, int*** board)
 		if (check == -1)
 			return (false);
 		changes += check;
-		place_single_cell(board);
+		check = place_single_cell(board);
 		if (check == -1)
 			return (false);
 		changes += check;

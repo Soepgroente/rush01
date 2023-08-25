@@ -11,7 +11,7 @@
 # include <string.h>
 # include <time.h>
 
-# define ITER_COUNT 100000
+# define ITER_COUNT 100
 
 extern int size;
 
@@ -23,10 +23,10 @@ typedef struct s_grid
 	int*	sky_down;
 	int*	sky_left;
 	int*	sky_right;
-	int*	row;
-	int*	rev_row;
-	int*	col;
-	int*	rev_col;
+	int**	row;
+	int**	rev_row;
+	int**	col;
+	int**	rev_col;
 	int		iter;
 	int		iter_count;
 }	t_grid;
@@ -34,7 +34,7 @@ typedef struct s_grid
 /* Parsing */
 
 void	parse_input(t_grid* grid, char** argv);
-int***	malloc_board(t_grid* grid);
+int***	malloc_board(void);
 void	free_board(int*** board);
 void	free_everything(t_grid* grid);
 
@@ -43,8 +43,8 @@ void	free_everything(t_grid* grid);
 void	clean_up(int*** board);
 void	print_board(t_grid* grid, int*** board);
 void	print_everything(int*** board);
-void	print_single_line(int* line);
-void	some_error(t_grid* grid);
+void	print_single_line(int** line);
+void	some_error(char* msg);
 void	update_progress(t_grid* grid, int*** board);
 
 /* Solver functions */
@@ -58,10 +58,10 @@ bool	check_if_possible(t_grid* grid, int*** board, int x, int y, int try);
 
 /* Vision stuff */
 
-int*	copy_array(int* line);
-bool	in_array(int x, int* line);
-int		count_vision(int* line);
-int		min_vision(int* line);
-int		max_vision(int* line);
+int**	copy_array(int** line);
+bool	in_array(int x, int** line);
+int		count_vision(int** line);
+int		min_vision(int** line);
+int		max_vision(int** line);
 
 #endif
