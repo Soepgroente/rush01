@@ -70,7 +70,7 @@ void	update_progress(t_grid* grid, int*** board)
 {
 	grid->iter_count++;
 	grid->iter = 0;
-	printf("Iterations: %lu\n", (size_t) (grid->iter_count * ITER_COUNT + grid->iter));
+	printf("Iterations: %d million\n", (int) (grid->iter_count * ITER_COUNT + grid->iter) / 1000000);
 	print_board(grid, board);
 	print_everything(board);
 }

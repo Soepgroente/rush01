@@ -50,9 +50,9 @@ int	count_vision(int** line)
 			count++;
 		}
 	}
-	print_single_line(line);
+	// print_single_line(line);
 	free_line(line);
-	printf("Count: %d\n\n", count);
+	// printf("Count: %d\n\n", count);
 	return (count);
 }
 
@@ -69,7 +69,7 @@ int	min_vision(int** line)
 		num--;
 	if (i < size && copy[i][0] == 0)
 		copy[i][0] = num;
-	puts("Min");
+	// puts("Min");
 	return (count_vision(copy));
 }
 

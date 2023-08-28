@@ -17,10 +17,10 @@ static bool	solve_puzzle(t_grid* grid)
 	grid->iter++;
 	b++;
 	copy_board(grid->board[b - 1], grid->board[b]);
-	if (grid->iter == 3)
+	if (grid->iter == ITER_COUNT)
 	{
 		update_progress(grid, grid->board[b]);
-		exit(0);
+		// exit(0);
 	}
 	for (int x = 0; x < size; x++)
 	{
@@ -30,7 +30,7 @@ static bool	solve_puzzle(t_grid* grid)
 			{
 				for (int try = 1; try <= size; try++)
 				{
-					printf("Try: %d\n", try);
+					// printf("Try: %d\n", try);
 					if (grid->board[b][x][y][try] != 0 && check_if_possible(grid, grid->board[b], x, y, try) == true)
 					{
 						grid->board[b][x][y][0] = try;

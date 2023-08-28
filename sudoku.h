@@ -11,7 +11,7 @@
 # include <string.h>
 # include <time.h>
 
-# define ITER_COUNT 100
+# define ITER_COUNT 1000000
 
 extern int size;
 

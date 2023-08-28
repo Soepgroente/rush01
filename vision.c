@@ -6,7 +6,7 @@ static bool	skyscrape_left(t_grid* grid, int x)
 		return (false);
 	if (max_vision(grid->row) < grid->sky_left[x])
 		return (false);
-	puts("Left true");
+	// puts("Left true");
 	return (true);
 }
 
@@ -16,7 +16,7 @@ static bool	skyscrape_right(t_grid* grid, int x)
 		return (false);
 	if (max_vision(grid->rev_row) < grid->sky_right[x])
 		return (false);
-	puts("Right true");
+	// puts("Right true");
 	return (true);
 }
 
@@ -26,7 +26,7 @@ static bool	skyscrape_up(t_grid* grid, int y)
 		return (false);
 	if (max_vision(grid->col) < grid->sky_up[y])
 		return (false);
-	puts("Up true");
+	// puts("Up true");
 	return (true);
 }
 
@@ -36,7 +36,7 @@ static bool	skyscrape_down(t_grid* grid, int y)
 		return (false);
 	if (max_vision(grid->rev_col) < grid->sky_down[y])
 		return (false);
-	puts("Down true");
+	// puts("Down true");
 	return (true);
 }
 
@@ -62,7 +62,7 @@ static bool	check_row(t_grid* grid, int*** board, int x, int y, int try)
 		grid->row[y][i] = 0;
 		grid->rev_row[size - 1 - y][i] = 0;
 	}
-	puts("Row true");
+	// puts("Row true");
 	return (true);
 }
 
@@ -88,7 +88,7 @@ static bool	check_column(t_grid* grid, int*** board, int x, int y, int try)
 		grid->col[x][i] = 0;
 		grid->rev_col[size - 1 - x][i] = 0;
 	}
-	puts("Col true");
+	// puts("Col true");
 	return (true);
 }
 
