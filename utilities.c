@@ -82,9 +82,9 @@ void	print_single_line(int** line)
 	printf("\n");
 	for (int y = 0; y < size; y++)
 	{
-		for (int z = 0; z < size; z++)
+		for (int z = 0; z <= size; z++)
 			printf("%d", line[y][z]);
 		printf(" | ");
 	}
-	printf("\n");
+	printf("\n\n");
 }

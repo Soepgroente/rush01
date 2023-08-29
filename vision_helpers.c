@@ -41,6 +41,7 @@ int	count_vision(int** line)
 {
 	int count = 0;
 	int high = 0;
+	static int hi = 0;
 
 	for (int i = 0; i < size; i++)
 	{
@@ -50,8 +51,11 @@ int	count_vision(int** line)
 			count++;
 		}
 	}
-	// print_single_line(line);
+	print_single_line(line);
 	free_line(line);
+	hi++;
+	if (hi == 10)
+		exit(0);
 	// printf("Count: %d\n\n", count);
 	return (count);
 }
@@ -59,17 +63,24 @@ int	count_vision(int** line)
 int	min_vision(int** line)
 {
 	int		i = 0;
+	int		high = 0;
 	int		num = size;
 	int**	copy;
 
 	copy = copy_array(line);
 	while (i < size && copy[i][0] != 0)
+	{
+		if (copy[i][0] > high)
+			high = copy[i][0];
 		i++;
+	}
+	
 	while (in_array(num, copy) == true)
 		num--;
 	if (i < size && copy[i][0] == 0)
 		copy[i][0] = num;
 	// puts("Min");
+	print_single_line(line);
 	return (count_vision(copy));
 }
 
@@ -124,5 +135,6 @@ int	max_vision(int** line)
 			copy[i][0] = num;
 		i++;
 	}
+	print_single_line(line);
 	return (count_vision(copy));
 }
