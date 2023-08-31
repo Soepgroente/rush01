@@ -59,8 +59,8 @@ int	main(int argc, char **argv)
 	size = ((argc - 1) / 4);
 	start_time = clock();
 	parse_input(&grid, argv);
-	// printf("Initial board:");
-	// print_board(&grid, grid.board[0]);
+	printf("Initial board:");
+	print_board(&grid, grid.board[0]);
 	// print_everything(grid.board[0]);
 	remove_options(&grid, grid.board[0]);
 	// printf("After removing options");

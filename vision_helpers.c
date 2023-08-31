@@ -44,11 +44,11 @@ bool	in_array(int** line, int num)
 
 bool	skyscraper_vision(int** line, int clue1, int clue2)
 {
-	for (int try = size; try > 0; try--)
+	for (int i = 0; i < size; i++)
 	{
-		for (int i = 0; i < size; i++)
+		if (line[i][0] == 0)
 		{
-			if (line[i][0] == 0)
+			for (int try = size; try > 0; try--)
 			{
 				if (line[i][try] != 0 && in_array(line, try) == false)
 				{
@@ -58,9 +58,9 @@ bool	skyscraper_vision(int** line, int clue1, int clue2)
 					line[i][0] = 0;
 				}
 			}
-		}
-		if (in_array(line, try) == false)
 			return (false);
+		}
+		// if (in_array(line, try) == false)
 	}
 	if (count_vision(line) != clue1 || count_rev_vision(line) != clue2)
 		return (false);
