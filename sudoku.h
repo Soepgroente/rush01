@@ -11,7 +11,7 @@
 # include <string.h>
 # include <time.h>
 
-# define ITER_COUNT 1000000
+# define ITER_COUNT 10000
 
 extern int size;
 
@@ -58,10 +58,9 @@ bool	check_if_possible(t_grid* grid, int*** board, int x, int y, int try);
 
 /* Vision stuff */
 
-int**	copy_array(int** line);
-bool	in_array(int x, int** line);
+bool	skyscraper_vision(int** line, int clue1, int clue2);
 int		count_vision(int** line);
-int		min_vision(int** line);
-int		max_vision(int** line);
+int		count_rev_vision(int** line);
+bool	in_array(int** line, int num);
 
 #endif

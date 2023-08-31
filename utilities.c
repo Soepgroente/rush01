@@ -28,24 +28,28 @@ void	print_board(t_grid* grid, int*** board)
 
 	puts("\n");
 	print_top_clues(grid);
-	printf("--------------------------");
-	printf("\n%d | ", grid->sky_left[x]);
+	for (int i = 0; i < size; i++)
+		printf("---");
+	printf("\n%X | ", grid->sky_left[x]);
 	while (x < size)
 	{
 		while (y < size)
 		{
-			printf("%d ", board[x][y][0]);
+			printf("%X ", board[x][y][0]);
 			y++;
 			if (y == size && x < size - 1)
 			{
-				printf("| %d\n%d | ", grid->sky_right[x], grid->sky_left[x + 1]);
+				printf("| %X\n%X | ", grid->sky_right[x], grid->sky_left[x + 1]);
 			}
 		}
 		x++;
 		y = 0;
 	}
-	printf("| %d", grid->sky_right[x - 1]);
-	printf("\n--------------------------\n");
+	printf("| %X", grid->sky_right[x - 1]);
+	printf("\n");
+	for (int i = 0; i < size; i++)
+		printf("---");
+	printf("\n");
 	print_bot_clues(grid);
 	puts("\n");
 }
@@ -58,7 +62,7 @@ void	print_everything(int*** board)
 		for (int y = 0; y < size; y++)
 		{
 			for (int z = 0; z < size + 1; z++)
-				printf("%d", board[x][y][z]);
+				printf("%X", board[x][y][z]);
 			printf(" | ");
 		}
 		printf("\n");
@@ -70,9 +74,9 @@ void	update_progress(t_grid* grid, int*** board)
 {
 	grid->iter_count++;
 	grid->iter = 0;
-	printf("Iterations: %d million\n", (int) (grid->iter_count * ITER_COUNT + grid->iter) / 1000000);
+	printf("Iterations: %lu\n", (long) (grid->iter_count * ITER_COUNT + grid->iter));
 	print_board(grid, board);
-	print_everything(board);
+	// print_everything(board);
 }
 
 void	print_single_line(int** line)
