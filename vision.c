@@ -62,6 +62,6 @@ bool	check_if_possible(t_grid* grid, int*** board, int x, int y, int try)
 		check_column(grid, board, x, y, try) == true && \
 		skyscrape_leftright(grid, x) == true && \
 		skyscrape_updown(grid, y) == true)
-		return (print_board(grid, board), true);
+		return (true);
 	return (false);
 }
