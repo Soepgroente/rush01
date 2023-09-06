@@ -9,10 +9,7 @@ int	count_vision(int** line)
 	while (i < size)
 	{
 		if (line[i][0] == 0 && high < size)
-		{
-			// puts("-1");
 			return (-1);
-		}
 		if (line[i][0] > high)
 		{
 			high = line[i][0];
@@ -55,8 +52,6 @@ bool	in_array(int** line, int num)
 
 bool	skyscraper_vision(int** line, int clue1, int clue2)
 {
-	// print_single_line(line);
-	// printf("Vision: %d\n", count_vision(line));
 	if (count_vision(line) != -1 && count_vision(line) != clue1)
 		return (false);
 	for (int i = 0; i < size; i++)
@@ -75,7 +70,6 @@ bool	skyscraper_vision(int** line, int clue1, int clue2)
 			}
 			return (false);
 		}
-		// if (in_array(line, try) == false)
 	}
 	if (count_vision(line) != clue1 || count_rev_vision(line) != clue2)
 		return (false);

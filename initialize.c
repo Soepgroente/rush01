@@ -1,13 +1,18 @@
 #include "sudoku.h"
 
-static void	paste_input(int* clue, char** argv, int i)
+static void	paste_input(int* clue, char** argv, int x)
 {
-	if (strlen(argv[i + 1]) != 1 || (!isdigit(*argv[i + 1])))
+	int i = 0;
+
+	x++;
+	while (argv[x][i] != '\0')
 	{
-		puts("Invalid input");
-		exit(EXIT_FAILURE);
+		printf("%c", argv[x][i]);
+		if (!isdigit(argv[x][i]))
+			some_error("Invalid input");
+		i++;
 	}
-	clue[i % size] = atoi(argv[i + 1]);
+	clue[(x - 1) % size] = atoi(argv[x]);
 }
 
 void	free_everything(t_grid* grid)

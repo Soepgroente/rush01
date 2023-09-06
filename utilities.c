@@ -10,7 +10,7 @@ static void	print_bot_clues(t_grid* grid)
 {
 	printf("x | ");
 	for (int i = 0; i < size; i++)
-		printf("%d ", grid->sky_down[i]);
+		printf("%X ", grid->sky_down[i]);
 	printf("| x\n");
 }
 
@@ -18,7 +18,7 @@ static void	print_top_clues(t_grid* grid)
 {
 	printf("x | ");
 	for (int i = 0; i < size; i++)
-		printf("%d ", grid->sky_up[i]);
+		printf("%X ", grid->sky_up[i]);
 	printf("| x\n");
 }
 
@@ -82,12 +82,12 @@ void	update_progress(t_grid* grid, int*** board)
 void	print_single_line(int** line)
 {
 	for (int i = 0; i < size; i++)
-		printf("%d", line[i][0]);
+		printf("%X", line[i][0]);
 	printf("\n");
 	for (int y = 0; y < size; y++)
 	{
 		for (int z = 0; z <= size; z++)
-			printf("%d", line[y][z]);
+			printf("%X", line[y][z]);
 		printf(" | ");
 	}
 	printf("\n\n");

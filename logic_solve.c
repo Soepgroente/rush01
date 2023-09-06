@@ -87,7 +87,6 @@ int	place_single_row(int*** board)
 					return (-1);
 				if (check > 0)
 				{
-					// print_board(global_grid, board);
 					if (check_if_possible(global_grid, board, x, check, try) == true)
 					{
 						board[x][check][0] = try;
@@ -139,7 +138,6 @@ int	place_single_col(int*** board)
 					return (-1);
 				if (check > 0)
 				{
-					// print_board(global_grid, board);
 					if (check_if_possible(global_grid, board, check, y, try) == true)
 					{
 						board[check][y][0] = try;
@@ -183,7 +181,6 @@ int	place_single_cell(int*** board)
 					return (-1);
 				if (check > 0)
 				{
-					// print_board(global_grid, board);
 					if (check_if_possible(global_grid, board, x, y, check) == true)
 					{
 						board[x][y][0] = check;
