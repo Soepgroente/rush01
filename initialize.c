@@ -7,7 +7,6 @@ static void	paste_input(int* clue, char** argv, int x)
 	x++;
 	while (argv[x][i] != '\0')
 	{
-		printf("%c", argv[x][i]);
 		if (!isdigit(argv[x][i]))
 			some_error("Invalid input");
 		i++;

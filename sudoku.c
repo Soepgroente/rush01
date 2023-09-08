@@ -61,14 +61,14 @@ int	main(int argc, char **argv)
 	parse_input(&grid, argv);
 	printf("Initial board:");
 	print_board(&grid, grid.board[0]);
-	print_everything(grid.board[0]);
+	// print_everything(grid.board[0]);
 	remove_options(&grid, grid.board[0]);
-	printf("After removing options");
-	print_everything(grid.board[0]);
+	// printf("After removing options");
+	// print_everything(grid.board[0]);
 	logic_solve(&grid, grid.board[0]);
-	printf("After logics:");
-	print_board(&grid, grid.board[0]);
-	print_everything(grid.board[0]);
+	// printf("After logics:");
+	// print_board(&grid, grid.board[0]);
+	// print_everything(grid.board[0]);
 	if (solve_puzzle(&grid) == true)
 	{
 		printf("\nSolved!\nFinal board:");
