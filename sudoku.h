@@ -11,7 +11,7 @@
 # include <string.h>
 # include <time.h>
 
-# define ITER_COUNT 10000
+# define ITER_COUNT 100000
 
 extern int size;
 
@@ -64,3 +64,11 @@ int		count_rev_vision(int** line);
 bool	in_array(int** line, int num);
 
 #endif
+
+
+0 1 2 3
+
+00
+01
+10
+11
