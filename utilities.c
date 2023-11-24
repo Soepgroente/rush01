@@ -90,5 +90,5 @@ void	print_single_line(int** line)
 			printf("%X", line[y][z]);
 		printf(" | ");
 	}
-	printf("\n\n");
+	printf("\n");
 }

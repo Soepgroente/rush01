@@ -67,7 +67,7 @@ int	place_single_row(int*** board)
 	int check = -1;
 	int changes = 0;
 
-	for (int try = 1; try <= size; try++)
+	for (int try = size; try > 0; try--)
 	{
 		for (int x = 0; x < size; x++)
 		{
@@ -79,18 +79,20 @@ int	place_single_row(int*** board)
 						check = y;
 					else if (board[x][y][try] != 0)
 					{
-						check = 0;
+						check = -2;
 						break ;
 					}
 				}
 				if (check == -1)
 					return (-1);
-				if (check > 0)
+				if (check >= 0)
 				{
 					if (check_if_possible(global_grid, board, x, check, try) == true)
 					{
 						board[x][check][0] = try;
-						clean_up(board);
+						delete_rowcol(board, x, check, try);
+						for (int i = 1; i <= size; i++)
+							board[x][check][i] = 0;
 						changes++;
 					}
 					else
@@ -118,7 +120,7 @@ int	place_single_col(int*** board)
 	int check = -1;
 	int changes = 0;
 
-	for (int try = 1; try <= size; try++)
+	for (int try = size; try > 0; try--)
 	{
 		for (int y = 0; y < size; y++)
 		{
@@ -130,18 +132,20 @@ int	place_single_col(int*** board)
 						check = x;
 					else if (board[x][y][try] != 0)
 					{
-						check = 0;
+						check = -2;
 						break ;
 					}
 				}
 				if (check == -1)
 					return (-1);
-				if (check > 0)
+				if (check >= 0)
 				{
 					if (check_if_possible(global_grid, board, check, y, try) == true)
 					{
 						board[check][y][0] = try;
-						clean_up(board);
+						delete_rowcol(board, check, y, try);
+						for (int i = 1; i <= size; i++)
+							board[check][y][i] = 0;
 						changes++;
 					}
 					else
@@ -173,7 +177,7 @@ int	place_single_cell(int*** board)
 						check = try;
 					else if (board[x][y][try] != 0)
 					{
-						check = 0;
+						check = -2;
 						break ;
 					}
 				}
@@ -184,7 +188,9 @@ int	place_single_cell(int*** board)
 					if (check_if_possible(global_grid, board, x, y, check) == true)
 					{
 						board[x][y][0] = check;
-						clean_up(board);
+						delete_rowcol(board, x, y, check);
+						for (int i = 1; i <= size; i++)
+							board[x][y][i] = 0;
 						changes++;
 					}
 					else
@@ -220,5 +226,5 @@ bool	logic_solve(t_grid* grid, int*** board)
 			return (false);
 		changes += check;
 	}
-	return (true);
+	return (puts("Returned true"), true);
 }

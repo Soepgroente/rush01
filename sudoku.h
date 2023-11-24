@@ -11,7 +11,7 @@
 # include <string.h>
 # include <time.h>
 
-# define ITER_COUNT 10000
+# define ITER_COUNT 1
 
 extern int size;
 
@@ -23,10 +23,8 @@ typedef struct s_grid
 	int*	sky_down;
 	int*	sky_left;
 	int*	sky_right;
-	int**	row;
-	int**	rev_row;
-	int**	col;
-	int**	rev_col;
+	int***	row;
+	int***	col;
 	int		iter;
 	int		iter_count;
 }	t_grid;
@@ -58,9 +56,12 @@ bool	check_if_possible(t_grid* grid, int*** board, int x, int y, int try);
 
 /* Vision stuff */
 
-bool	skyscraper_vision(int** line, int clue1, int clue2);
-int		count_vision(int** line);
-int		count_rev_vision(int** line);
+bool	skyscraper_vision(int*** line, int clue1, int clue2);
+int		count_vision(int** line, int clue);
+int		count_rev_vision(int** line, int clue);
+void	copy_line(int** src_line, int** dest_line);
+bool	solve_line(int** line);
 bool	in_array(int** line, int num);
+void	clear_row_cell(int** line, int try, int cell);
 
 #endif
