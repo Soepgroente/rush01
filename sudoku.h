@@ -11,9 +11,15 @@
 # include <string.h>
 # include <time.h>
 
-# define ITER_COUNT 1
+# define ITER_COUNT 100000
 
 extern int size;
+
+typedef enum	e_nums
+{
+	DEAD_END = -1,
+	SUCCESS,
+}	t_nums;
 
 typedef struct s_grid
 {
@@ -23,8 +29,8 @@ typedef struct s_grid
 	int*	sky_down;
 	int*	sky_left;
 	int*	sky_right;
-	int***	row;
-	int***	col;
+	int**	row;
+	int**	col;
 	int		iter;
 	int		iter_count;
 }	t_grid;
@@ -38,7 +44,6 @@ void	free_everything(t_grid* grid);
 
 /* Utilities */
 
-void	clean_up(int*** board);
 void	print_board(t_grid* grid, int*** board);
 void	print_everything(int*** board);
 void	print_single_line(int** line);
@@ -56,12 +61,18 @@ bool	check_if_possible(t_grid* grid, int*** board, int x, int y, int try);
 
 /* Vision stuff */
 
-bool	skyscraper_vision(int*** line, int clue1, int clue2);
 int		count_vision(int** line, int clue);
 int		count_rev_vision(int** line, int clue);
-void	copy_line(int** src_line, int** dest_line);
-bool	solve_line(int** line);
-bool	in_array(int** line, int num);
-void	clear_row_cell(int** line, int try, int cell);
+bool	double_vision(int** line, int clue1, int clue2);
+
+void	delete_rowcol_cell(int*** board, int x, int y, int num);
+
+/*	Vision checkers	*/
+
+int		alone_in_cell(int* cell);
+int		alone_in_column(int*** board, int col, int num);
+int		alone_in_row(int** row, int num);
+bool	in_column(int*** board, int col, int num);
+bool	in_row(int** line, int num);
 
 #endif

@@ -8,8 +8,7 @@ SRCS	=	initialize.c \
 			sudoku.c \
 			utilities.c \
 			vision.c \
-			vision_helpers.c \
-			vision_helper_helpers.c \
+			vision_utils.c \
 
 INCLUDE	=	-Isudoku.h
 

@@ -35,7 +35,7 @@ static bool	solve_puzzle(t_grid* grid)
 					copy_board(grid->board[b - 1], grid->board[b]);
 				}
 			}
-			if (in_array(grid->board[b][x], try) == false)
+			if (in_row(grid->board[b][x], try) == false)
 			{
 				b--;
 				return (false);
@@ -68,7 +68,7 @@ int	main(int argc, char **argv)
 	logic_solve(&grid, grid.board[0]);
 	printf("After logics:");
 	print_board(&grid, grid.board[0]);
-	print_everything(grid.board[0]);
+	// print_everything(grid.board[0]);
 	if (solve_puzzle(&grid) == true)
 	{
 		printf("\nSolved!\nFinal board:");

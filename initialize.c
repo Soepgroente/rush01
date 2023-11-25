@@ -62,24 +62,18 @@ int***	malloc_board(void)
 	return (board);
 }
 
-static int***	malloc_line(void)
+static int**	malloc_line(void)
 {
-	int***	line;
+	int**	line;
 
-	line = malloc((size + 1) * sizeof(int**));
+	line = malloc(size * sizeof(int*));
 	if (line == NULL)
 		some_error("Malloc line error");
-	for (int k = 0; k < size; k++)
+	for (int i = 0; i < size; i++)
 	{
-		line[k] = malloc(size * sizeof(int*));
-		if (line[k] == NULL)
+		line[i] = malloc((size + 1) * sizeof(int));
+		if (line[i] == NULL)
 			some_error("Malloc line error");
-		for (int i = 0; i < size; i++)
-		{
-			line[k][i] = malloc((size + 1) * sizeof(int));
-			if (line[k][i] == NULL)
-				some_error("Malloc line error");
-		}
 	}
 	return (line);
 }

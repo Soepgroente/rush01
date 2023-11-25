@@ -1,0 +1,239 @@
+Initial board:
+
+x | 9 8 7 6 5 4 3 2 1 | x
+---------------------------
+9 | 0 0 0 0 0 0 0 0 0 | 1
+8 | 0 0 0 0 0 0 0 0 0 | 2
+7 | 0 0 0 0 0 0 0 0 0 | 2
+6 | 0 0 0 0 0 0 0 0 0 | 2
+5 | 0 0 0 0 0 0 0 0 0 | 2
+4 | 0 0 0 0 0 0 0 0 0 | 2
+3 | 0 0 0 0 0 0 0 0 0 | 2
+2 | 0 0 0 0 0 0 0 0 0 | 2
+1 | 0 0 0 0 0 0 0 0 0 | 2
+---------------------------
+x | 1 2 2 2 2 2 2 2 2 | x
+
+
+After removing options
+0100000000 | 0120000000 | 0123000000 | 0123400000 | 0123450000 | 0123456000 | 0123456700 | 0123456780 | 0123456789 | 
+0120000000 | 0123000000 | 0123400000 | 0123450000 | 0123456000 | 0123456700 | 0123456780 | 0123456709 | 0123456700 | 
+0123000000 | 0123400000 | 0123450000 | 0123456000 | 0123456700 | 0123456780 | 0123456789 | 0123456709 | 0123456700 | 
+0123400000 | 0123450000 | 0123456000 | 0123456700 | 0123456780 | 0123456789 | 0123456789 | 0123456709 | 0123456700 | 
+0123450000 | 0123456000 | 0123456700 | 0123456780 | 0123456789 | 0123456789 | 0123456789 | 0123456709 | 0123456700 | 
+0123456000 | 0123456700 | 0123456780 | 0123456789 | 0123456789 | 0123456789 | 0123456789 | 0123456709 | 0123456700 | 
+0123456700 | 0123456780 | 0123456789 | 0123456789 | 0123456789 | 0123456789 | 0123456789 | 0123456709 | 0123456700 | 
+0123456780 | 0123456709 | 0123456709 | 0123456709 | 0123456709 | 0123456709 | 0123456709 | 0123456709 | 0123456700 | 
+0123456789 | 0123456700 | 0123456700 | 0123456700 | 0123456700 | 0123456700 | 0123456700 | 0123456700 | 0123456780 | 
+
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+After logics:
+
+x | 9 8 7 6 5 4 3 2 1 | x
+---------------------------
+9 | 1 2 3 4 5 6 7 8 9 | 1
+8 | 2 0 0 0 0 0 8 9 0 | 2
+7 | 3 0 0 0 0 8 9 0 0 | 2
+6 | 4 0 0 0 8 9 0 0 0 | 2
+5 | 5 0 0 8 9 0 0 0 0 | 2
+4 | 6 0 8 9 0 0 0 0 0 | 2
+3 | 7 8 9 0 0 0 0 0 0 | 2
+2 | 8 9 0 0 0 0 0 0 0 | 2
+1 | 9 0 0 0 0 0 0 0 0 | 2
+---------------------------
+x | 1 2 2 2 2 2 2 2 2 | x
+
+
+
+1000000000 | 2000000000 | 3000000000 | 4000000000 | 5000000000 | 6000000000 | 7000000000 | 8000000000 | 9000000000 | 
+2000000000 | 0103000000 | 0100400000 | 0103050000 | 0103406000 | 0103450700 | 8000000000 | 9000000000 | 0103456700 | 
+3000000000 | 0100400000 | 0120450000 | 0120056000 | 0120406700 | 8000000000 | 9000000000 | 0120456700 | 0120456700 | 
+4000000000 | 0103050000 | 0120056000 | 0123056700 | 8000000000 | 9000000000 | 0123056000 | 0123056700 | 0123056700 | 
+5000000000 | 0103406000 | 0120406700 | 8000000000 | 9000000000 | 0123400700 | 0123406000 | 0123406700 | 0123406700 | 
+6000000000 | 0103450700 | 8000000000 | 9000000000 | 0123400700 | 0123450700 | 0123450000 | 0123450700 | 0123450700 | 
+7000000000 | 8000000000 | 9000000000 | 0123056000 | 0123406000 | 0123450000 | 0123456000 | 0123456000 | 0123456000 | 
+8000000000 | 9000000000 | 0120456700 | 0123056700 | 0123406700 | 0123450700 | 0123456000 | 0123456700 | 0123456700 | 
+9000000000 | 0103456700 | 0120456700 | 0123056700 | 0123406700 | 0123450700 | 0123456000 | 0123456700 | 0123456780 | 
+
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+leftright
+updown
+
+Solved!
+Final board:
+
+x | 9 8 7 6 5 4 3 2 1 | x
+---------------------------
+9 | 1 2 3 4 5 6 7 8 9 | 1
+8 | 2 3 4 5 6 7 8 9 1 | 2
+7 | 3 4 5 6 7 8 9 1 2 | 2
+6 | 4 5 6 7 8 9 1 2 3 | 2
+5 | 5 6 7 8 9 1 2 3 4 | 2
+4 | 6 7 8 9 1 2 3 4 5 | 2
+3 | 7 8 9 1 2 3 4 5 6 | 2
+2 | 8 9 1 2 3 4 5 6 7 | 2
+1 | 9 1 2 3 4 5 6 7 8 | 2
+---------------------------
+x | 1 2 2 2 2 2 2 2 2 | x
+
+
+0.0030 seconds
+Iterations: 17

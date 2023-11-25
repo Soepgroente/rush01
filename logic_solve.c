@@ -2,31 +2,14 @@
 
 t_grid* global_grid;
 
-static void	delete_rowcol(int*** board, int x, int y, int num)
+void	delete_rowcol_cell(int*** board, int x, int y, int num)
 {
 	for (int i = 0; i < size; i++)
 		board[x][i][num] = 0;
 	for (int i = 0; i < size; i++)
 		board[i][y][num] = 0;
-}
-
-/*	Remove all digits from the options that are already placed 
-	somewhere in the row or column */
-
-void	clean_up(int*** board)
-{
-	for (int x = 0; x < size; x++)
-	{
-		for (int y = 0; y < size; y++)
-		{
-			if (board[x][y][0] != 0)
-			{
-				delete_rowcol(board, x, y, board[x][y][0]);
-				for (int z = 1; z <= size; z++)
-					board[x][y][z] = 0;
-			}
-		}
-	}
+	for (int i = 1; i <= size; i++)
+		board[x][y][i] = 0;
 }
 
 /*	Removes any digits that are too high for the skyscraper clue to remain valid	*/
@@ -35,6 +18,9 @@ void	remove_options(t_grid* grid, int*** board)
 {
 	for (int x = 0; x < size; x++)
 	{
+		if (grid->sky_left[x] <= 2 && grid->sky_right[x] <= 2)
+			for (int z = 1; z < size - 1; z++)
+				board[x][z][size - 1] = 0;
 		for (int y = 0; y < size; y++)
 		{
 			if (board[x][y][0] == 0)
@@ -50,109 +36,63 @@ void	remove_options(t_grid* grid, int*** board)
 			}
 		}
 	}
-}
-
-static bool	check_row_presence(int*** board, int x, int try)
-{
-	for (int i = 0; i < size; i++)
-		if (board[x][i][0] == try)
-			return (true);
-	return (false);
+	for (int y = 0; y < size; y++)
+		if (grid->sky_up[y] <= 2 && grid->sky_down[y] <= 2)
+			for (int z = 1; z < size - 1; z++)
+				board[z][y][size - 1] = 0;
 }
 
 /*	Find any digits that can only be placed in one place in a row	*/
 
 int	place_single_row(int*** board)
 {
-	int check = -1;
+	int num = 0;
 	int changes = 0;
 
 	for (int try = size; try > 0; try--)
 	{
 		for (int x = 0; x < size; x++)
 		{
-			if (check_row_presence(board, x, try) == false)
+			if (in_row(board[x], try) == false)
 			{
-				for (int y = 0; y < size; y++)
+				num = alone_in_row(board[x], try);
+				if (num != 0)
 				{
-					if (check == -1 && board[x][y][try] != 0)
-						check = y;
-					else if (board[x][y][try] != 0)
-					{
-						check = -2;
-						break ;
-					}
-				}
-				if (check == -1)
-					return (-1);
-				if (check >= 0)
-				{
-					if (check_if_possible(global_grid, board, x, check, try) == true)
-					{
-						board[x][check][0] = try;
-						delete_rowcol(board, x, check, try);
-						for (int i = 1; i <= size; i++)
-							board[x][check][i] = 0;
-						changes++;
-					}
-					else
-						return (-1);	
+					if (check_if_possible(global_grid, board, x, num, try) == false)
+						return (DEAD_END);
+					board[x][num][0] = try;
+					delete_rowcol_cell(board, x, num, try);
+					changes++;
 				}
 			}
-			check = -1;
 		}
 	}
 	return (changes);
-}
-
-static bool	check_col_presence(int*** board, int y, int try)
-{
-	for (int i = 0; i < size; i++)
-		if (board[i][y][0] == try)
-			return (true);
-	return (false);
 }
 
 /*	Find any digits that can only be placed in one place in a column	*/
 
 int	place_single_col(int*** board)
 {
-	int check = -1;
+	int num = 0;
 	int changes = 0;
 
 	for (int try = size; try > 0; try--)
 	{
 		for (int y = 0; y < size; y++)
 		{
-			if (check_col_presence(board, y, try) == false)
+			if (in_column(board, y, try) == false)
 			{
-				for (int x = 0; x < size; x++)
+				num = alone_in_column(board, y, try);
+				if (num != 0)
 				{
-					if (check == -1 && board[x][y][try] != 0)
-						check = x;
-					else if (board[x][y][try] != 0)
-					{
-						check = -2;
-						break ;
-					}
-				}
-				if (check == -1)
-					return (-1);
-				if (check >= 0)
-				{
-					if (check_if_possible(global_grid, board, check, y, try) == true)
-					{
-						board[check][y][0] = try;
-						delete_rowcol(board, check, y, try);
-						for (int i = 1; i <= size; i++)
-							board[check][y][i] = 0;
-						changes++;
-					}
-					else
-						return (-1);	
+					if (check_if_possible(global_grid, board, num, y, try) == false)
+						return (DEAD_END);
+					board[num][y][0] = try;
+					delete_rowcol_cell(board, num, y, try);
+					changes++;
 				}
 			}
-			check = -1;
 		}
 	}
 	return (changes);
@@ -162,7 +102,7 @@ int	place_single_col(int*** board)
 
 int	place_single_cell(int*** board)
 {
-	int check = -1;
+	int num = 0;
 	int changes = 0;
 
 	for (int x = 0; x < size; x++)
@@ -171,33 +111,16 @@ int	place_single_cell(int*** board)
 		{
 			if (board[x][y][0] == 0)
 			{
-				for (int try = 1; try <= size; try++)
+				num = alone_in_cell(board[x][y]);
+				if (num != 0)
 				{
-					if (check == -1 && board[x][y][try] != 0)
-						check = try;
-					else if (board[x][y][try] != 0)
-					{
-						check = -2;
-						break ;
-					}
-				}
-				if (check == -1)
-					return (-1);
-				if (check > 0)
-				{
-					if (check_if_possible(global_grid, board, x, y, check) == true)
-					{
-						board[x][y][0] = check;
-						delete_rowcol(board, x, y, check);
-						for (int i = 1; i <= size; i++)
-							board[x][y][i] = 0;
-						changes++;
-					}
-					else
-						return (-1);	
+					if (check_if_possible(global_grid, board, x, y, num) == true)
+						return (DEAD_END);
+					board[x][y][0] = num;
+					delete_rowcol_cell(board, x, y, num);
+					changes++;
 				}
 			}
-			check = -1;
 		}
 	}
 	return (changes);
@@ -209,22 +132,21 @@ bool	logic_solve(t_grid* grid, int*** board)
 	int check;
 
 	global_grid = grid;
-	clean_up(board);
 	while (changes > 0)
 	{
 		changes = 0;
 		check = place_single_cell(board);
-		if (check == -1)
+		if (check == DEAD_END)
 			return (false);
 		changes += check;
 		check = place_single_row(board);
-		if (check == -1)
+		if (check == DEAD_END)
 			return (false);
 		changes += check;
 		check = place_single_col(board);
-		if (check == -1)
+		if (check == DEAD_END)
 			return (false);
 		changes += check;
 	}
-	return (puts("Returned true"), true);
+	return (true);
 }
