@@ -64,11 +64,3 @@ int		count_rev_vision(int** line);
 bool	in_array(int** line, int num);
 
 #endif
-
-
-0 1 2 3
-
-00
-01
-10
-11
