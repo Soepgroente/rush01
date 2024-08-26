@@ -59,16 +59,16 @@ int	main(int argc, char **argv)
 	size = ((argc - 1) / 4);
 	start_time = clock();
 	parse_input(&grid, argv);
-	printf("Initial board:");
-	print_board(&grid, grid.board[0]);
+	// printf("Initial board:");
+	// print_board(&grid, grid.board[0]);
 	// print_everything(grid.board[0]);
 	remove_options(&grid, grid.board[0]);
-	printf("After removing options");
-	print_everything(grid.board[0]);
+	// printf("After removing options");
+	// print_everything(grid.board[0]);
 	// print_board(&grid, grid.board[0]);
 	logic_solve(&grid, grid.board[0]);
-	printf("After logics:");
-	print_board(&grid, grid.board[0]);
+	// printf("After logics:");
+	// print_board(&grid, grid.board[0]);
 	// print_everything(grid.board[0]);
 	if (solve_puzzle(&grid) == true)
 	{
@@ -76,11 +76,13 @@ int	main(int argc, char **argv)
 		print_board(&grid, grid.main_board);
 	}
 	else
+	{
 		printf("Couldn't solve :-(\n");
+		return (2);
+	}
 	end_time = clock();
 	total_time = (double)(end_time - start_time) / CLOCKS_PER_SEC;
 	printf("%.4f seconds\n", total_time);
 	printf("Iterations: %lu\n", (size_t) grid.iter_count * ITER_COUNT + grid.iter);
-	// system("leaks -q sudoku_solver");
 	return (0);
 }
